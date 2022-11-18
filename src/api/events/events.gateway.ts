@@ -18,13 +18,11 @@ export class EventsGateway
 
   @SubscribeMessage('events')
   handleEvent(
-    @MessageBody() data: string,
+    @MessageBody() message: string,
     @ConnectedSocket() client: Socket,
   ): string {
-    // console.log('data = ', data);
-    console.log('client ====== ', client);
-    this.server.emit('getChat', data);
-    return data;
+    this.server.emit('getChat', { message, socketId: client.id });
+    return message;
   }
 
   afterInit(server: Server) {
